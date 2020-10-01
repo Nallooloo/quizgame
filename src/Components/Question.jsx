@@ -1,15 +1,24 @@
 import React from "react";
 import AnswerCard from "./AnswerCard";
+import styled from "styled-components";
+
+const AnswerArea = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 556px;
+  margin: auto;
+`;
 
 const Question = ({ question, answers, correctAnswer }) => {
   return (
     <div>
       <h4>{question}</h4>
-      <div>
+      <AnswerArea>
         {answers.map((answer, index) => {
           return <AnswerCard answer={answer} key={index} />;
         })}
-      </div>
+      </AnswerArea>
     </div>
   );
 };
