@@ -10,14 +10,7 @@ const AnswerArea = styled.div`
   margin: auto;
 `;
 
-const Question = ({ question, answers, correctAnswer }) => {
-  const [answered, setAnswered] = useState("");
-
-  const answerQuestion = (value) => {
-    setAnswered(value);
-    alert(value);
-  };
-
+const Question = ({ question, answers, correctAnswer, answerQuestion }) => {
   return (
     <div>
       <h4>{question}</h4>
