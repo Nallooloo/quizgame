@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AnswerCard from "./AnswerCard";
 import styled from "styled-components";
 
@@ -11,12 +11,25 @@ const AnswerArea = styled.div`
 `;
 
 const Question = ({ question, answers, correctAnswer }) => {
+  const [answered, setAnswered] = useState("");
+
+  const answerQuestion = (value) => {
+    setAnswered(value);
+    alert(value);
+  };
+
   return (
     <div>
       <h4>{question}</h4>
       <AnswerArea>
         {answers.map((answer, index) => {
-          return <AnswerCard answer={answer} key={index} />;
+          return (
+            <AnswerCard
+              answer={answer}
+              key={index}
+              choiceMade={answerQuestion}
+            />
+          );
         })}
       </AnswerArea>
     </div>

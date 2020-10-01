@@ -14,8 +14,8 @@ const Card = styled.div`
   height: 100px;
 `;
 
-const AnswerCard = ({ answer }) => {
-  return <Card>{answer}</Card>;
+const AnswerCard = ({ answer, choiceMade }) => {
+  return <Card onClick={() => choiceMade(answer)}>{answer}</Card>;
 };
 
 export default AnswerCard;
