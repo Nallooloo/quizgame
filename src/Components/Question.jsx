@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AnswerCard from "./AnswerCard";
 import styled from "styled-components";
 
