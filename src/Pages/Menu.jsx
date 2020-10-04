@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const PlayGame = () => {
+const Menu = () => {
   return (
     <div>
       <Link to="/play">New game</Link>
@@ -9,4 +9,4 @@ const PlayGame = () => {
   );
 };
 
-export default PlayGame;
+export default Menu;
