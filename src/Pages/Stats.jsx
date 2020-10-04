@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Stats = () => {
+const Stats = ({ nbrCorrect, nbrQuestions, resetGame }) => {
   return (
     <div>
-      <div>some stats...</div>
-      <Link to="/play">Play agian!</Link>
+      <div>Number correct: {nbrCorrect}</div>
+      <div>Number answered: {nbrQuestions}</div>
+      <Link to="/play" onClick={() => resetGame()}>
+        Play agian!
+      </Link>
     </div>
   );
 };
