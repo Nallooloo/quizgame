@@ -21,4 +21,4 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-export default useEffect;
+export default useInterval;
