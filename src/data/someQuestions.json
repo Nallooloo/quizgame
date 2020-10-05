@@ -1,0 +1,22 @@
+[
+  {
+    "question": "Who made this?",
+    "answers": ["Flydiverny", "MrFluFFy", "Abakar", "God"],
+    "correctAnswer": "MrFluFFy"
+  },
+  {
+    "question": "Snus is probably made in...",
+    "answers": ["Finland", "Norway", "Sweden", "Denmark"],
+    "correctAnswer": "Sweden"
+  },
+  {
+    "question": "Math is hard: 1+3",
+    "answers": ["13", "31", "2", "4"],
+    "correctAnswer": "4"
+  },
+  {
+    "question": "Who is my brother?",
+    "answers": ["Flydiverny", "MrFluFFy", "Abakar", "God"],
+    "correctAnswer": "Flydiverny"
+  }
+]
