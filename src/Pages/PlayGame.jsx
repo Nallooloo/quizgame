@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import Question from "../Components/Question";
-import SuperPower from "../Components/SuperPower";
-import CountDownTimer from "../Components/CountdownTimer";
+import Question from "../components/Question/Question";
+import SuperPower from "../components/SuperPower/SuperPower";
+import CountDownTimer from "../components/CountdownTimer/CountdownTimer";
+import useInterval from "../hooks/useInterval";
 
 const someQuestions = [
   {
@@ -28,11 +29,24 @@ const someQuestions = [
   },
 ];
 
-const PlayGame = ({ nbrQuestions, addOneCorrect }) => {
+const powers = [
+  {
+    name: "Extend Time",
+  },
+  { name: "50-50" },
+];
+
+const PlayGame = ({
+  nbrQuestions,
+  addOneCorrect,
+  defaultTime = 15,
+  superPowerExtendTime = 10,
+}) => {
   const [nbrAnswered, setNbrAnswered] = useState(0);
   const [currQuestion, setCurrQuestion] = useState(null);
   const [questionSet, setQuestionSet] = useState([]);
-
+  const [timeRemaining, setTimeRemaining] = useState(defaultTime);
+  const [powersAvailable, setPowersAvailable] = useState({ powers });
   //"load the questions"
   useEffect(() => {
     setQuestionSet(someQuestions);
@@ -45,12 +59,33 @@ const PlayGame = ({ nbrQuestions, addOneCorrect }) => {
     setCurrQuestion(questionSet[nbrAnswered]);
   }, [questionSet, nbrAnswered]);
 
+  useInterval(() => {
+    // Your custom logic here
+    setTimeRemaining(timeRemaining - 0.01);
+  }, 10);
   const answerQuestion = (value) => {
     if (value === currQuestion.correctAnswer) {
       addOneCorrect();
     }
 
     setNbrAnswered(nbrAnswered + 1);
+  };
+
+  const usePower = (power) => {
+    switch (power) {
+      case "Extend Time":
+        setTimeRemaining(timeRemaining + 10);
+        break;
+
+      case "50-50":
+        break;
+      default:
+        break;
+    }
+  };
+
+  const extendTime = () => {
+    setTimeRemaining(timeRemaining + superPowerExtendTime);
   };
   //move up stuff below to make it more clear what happens.
   return (
@@ -59,8 +94,12 @@ const PlayGame = ({ nbrQuestions, addOneCorrect }) => {
       {currQuestion ? (
         <Question answerQuestion={answerQuestion} {...currQuestion} />
       ) : null}
-      <CountDownTimer />
-      <SuperPower />
+      <CountDownTimer
+        timeRemaining={timeRemaining}
+        setTimeRemaining={setTimeRemaining}
+      />
+
+      <SuperPower spendSuper={usePower} superPowers={powers} />
 
       <div>
         Number answered: {nbrAnswered}/{nbrQuestions}
