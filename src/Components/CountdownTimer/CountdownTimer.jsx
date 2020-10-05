@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import useInterval from "../../hooks/useInterval";
 
 const RedCount = styled.h3`
   margin: 0px;
@@ -13,17 +12,11 @@ const GreenCount = styled.h3`
 `;
 
 const CountDownTimer = ({
-  //   setTimeRemaining,
+  setTimeRemaining,
   redTimer = 5,
-  defaultTime = 15,
+
+  timeRemaining,
 }) => {
-  let [timeRemaining, setTimeRemaining] = useState(defaultTime);
-
-  useInterval(() => {
-    // Your custom logic here
-    setTimeRemaining(timeRemaining - 0.01);
-  }, 10);
-
   return timeRemaining >= redTimer ? (
     <div>
       Remaining time:
