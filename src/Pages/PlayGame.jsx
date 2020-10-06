@@ -4,37 +4,8 @@ import Question from "../components/Question/Question";
 import SuperPower from "../components/SuperPower/SuperPower";
 import CountDownTimer from "../components/CountdownTimer/CountdownTimer";
 import useInterval from "../hooks/useInterval";
-
-const someQuestions = [
-  {
-    question: "Who made this?",
-    answers: ["Flydiverny", "MrFluFFy", "Abakar", "God"],
-    correctAnswer: "MrFluFFy",
-  },
-
-  {
-    question: "Snus is probably made in...",
-    answers: ["Finland", "Norway", "Sweden", "Denmark"],
-    correctAnswer: "Sweden",
-  },
-  {
-    question: "Math is hard: 1+3",
-    answers: ["13", "31", "2", "4"],
-    correctAnswer: "4",
-  },
-  {
-    question: "Who is my brother?",
-    answers: ["Flydiverny", "MrFluFFy", "Abakar", "God"],
-    correctAnswer: "Flydiverny",
-  },
-];
-
-const powers = [
-  {
-    name: "Extend Time",
-  },
-  { name: "50-50" },
-];
+import someQuestions from "../data/someQuestions.json";
+import somePowers from "../data/somePowers.json";
 
 const PlayGame = ({
   nbrQuestions,
@@ -46,7 +17,7 @@ const PlayGame = ({
   const [currQuestion, setCurrQuestion] = useState(null);
   const [questionSet, setQuestionSet] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState(defaultTime);
-  const [powersAvailable, setPowersAvailable] = useState({ powers });
+  const [powersAvailable, setPowersAvailable] = useState({ somePowers });
   //"load the questions"
   useEffect(() => {
     setQuestionSet(someQuestions);
@@ -74,19 +45,51 @@ const PlayGame = ({
   const usePower = (power) => {
     switch (power) {
       case "Extend Time":
-        setTimeRemaining(timeRemaining + 10);
+        setTimeRemaining(timeRemaining + superPowerExtendTime);
         break;
 
       case "50-50":
+        removeAnswers();
         break;
       default:
         break;
     }
   };
 
-  const extendTime = () => {
-    setTimeRemaining(timeRemaining + superPowerExtendTime);
+  const removeAnswers = () => {
+    let filterAns = [];
+    console.log(currQuestion.answers.length);
+    console.log(currQuestion.answers);
+    if (currQuestion.answers.length === 1) {
+      return;
+    }
+    while (currQuestion.answers.length / 2 > filterAns.length) {
+      console.log("im looping");
+      let rng = Math.floor(Math.random() * currQuestion.answers.length);
+      if (
+        currQuestion.answers[rng] !== currQuestion.correctAnswer &&
+        filterAns.indexOf(currQuestion.answers[rng]) === -1
+      ) {
+        filterAns.push(currQuestion.answers[rng]);
+        console.log(filterAns);
+      }
+    }
+
+    if (filterAns) {
+      let newAns = currQuestion.answers.filter(
+        (ans) => filterAns.indexOf(ans) === -1
+      );
+
+      //ugly fix to get rid of issues with modifying "currQuestion", better fix implement a deep copy on load?
+      let tmp = {};
+      tmp.answers = newAns;
+      tmp.question = currQuestion.question;
+      tmp.correctAnswer = currQuestion.correctAnswer;
+      // currQuestion.answers = newAns;
+      setCurrQuestion(tmp);
+    }
   };
+
   //move up stuff below to make it more clear what happens.
   return (
     <div>
@@ -99,7 +102,7 @@ const PlayGame = ({
         setTimeRemaining={setTimeRemaining}
       />
 
-      <SuperPower spendSuper={usePower} superPowers={powers} />
+      <SuperPower spendSuper={usePower} superPowers={somePowers} />
 
       <div>
         Number answered: {nbrAnswered}/{nbrQuestions}
