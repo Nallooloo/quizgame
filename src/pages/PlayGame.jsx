@@ -14,17 +14,20 @@ const PlayGame = ({
   superPowerExtendTime = 10,
 }) => {
   const [nbrAnswered, setNbrAnswered] = useState(0);
-  const [currQuestion, setCurrQuestion] = useState(null);
+  const [currQuestion, setCurrQuestion] = useState({});
   const [questionSet, setQuestionSet] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState(defaultTime);
-  const [powersAvailable, setPowersAvailable] = useState({ somePowers });
+  const [superPowers, setsuperPowers] = useState([]);
   const [powersUsed, setPowersUsed] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
+  const [loading, setLoading] = useState(true);
   //"load the questions"
   useEffect(() => {
-    setQuestionSet(someQuestions);
-    setCurrQuestion(someQuestions[0]);
-    console.log("i loaded questions");
+    (async () => {
+      setQuestionSet(someQuestions);
+      setCurrQuestion(someQuestions[0]);
+      setsuperPowers(somePowers);
+    })().then(() => setLoading(false));
   }, []);
 
   //on answer update question and rerender to display next question.
@@ -84,35 +87,44 @@ const PlayGame = ({
     setRemovedAnswers(filterAns);
   };
 
-  //move up stuff below to make it more clear what happens.
-  return (
-    <div>
-      {/* if we have answered all questions we r done, go to stats... */}
-      {nbrAnswered === nbrQuestions ? <Redirect to="/stats" /> : null}
-      {/* some issue here with intial load due to useEffect not loading current question be4 first render */}
-      {currQuestion ? (
+  const renderGame = () => {
+    if (loading) {
+      return <div> Loading game...</div>;
+    }
+
+    /* if we have answered all questions we r done, go to stats... */
+    if (nbrAnswered === nbrQuestions) {
+      return <Redirect to="/stats" />;
+    }
+    //render game:
+    return (
+      <div>
         <Question
           answerQuestion={answerQuestion}
           {...currQuestion}
           removedAnswers={removedAnswers}
         />
-      ) : null}
-      <CountDownTimer
-        timeRemaining={timeRemaining}
-        setTimeRemaining={setTimeRemaining}
-      />
 
-      <SuperPower
-        spendSuper={usePower}
-        superPowers={somePowers}
-        powersUsed={powersUsed}
-      />
+        <CountDownTimer
+          timeRemaining={timeRemaining}
+          setTimeRemaining={setTimeRemaining}
+        />
 
-      <div>
-        Number answered: {nbrAnswered}/{nbrQuestions}
+        <SuperPower
+          spendSuper={usePower}
+          superPowers={superPowers}
+          powersUsed={powersUsed}
+        />
+
+        <div>
+          Number answered: {nbrAnswered}/{nbrQuestions}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  //move up stuff below to make it more clear what happens.
+  return renderGame();
 };
 
 export default PlayGame;
