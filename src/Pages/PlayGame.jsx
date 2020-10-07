@@ -87,7 +87,9 @@ const PlayGame = ({
   //move up stuff below to make it more clear what happens.
   return (
     <div>
+      {/* if we have answered all questions we r done, go to stats... */}
       {nbrAnswered === nbrQuestions ? <Redirect to="/stats" /> : null}
+      {/* some issue here with intial load due to useEffect not loading current question be4 first render */}
       {currQuestion ? (
         <Question
           answerQuestion={answerQuestion}
