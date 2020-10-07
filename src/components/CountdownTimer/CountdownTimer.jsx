@@ -16,6 +16,7 @@ const CountDownTimer = ({
     <div>
       Remaining time:
       <Count timeRemaining={timeRemaining} redTimer={redTimer}>
+        {/* .toFixed decimals to display */}
         {timeRemaining.toFixed(1)}
       </Count>
     </div>
