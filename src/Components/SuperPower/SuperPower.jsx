@@ -1,11 +1,16 @@
 import React from "react";
 import SuperCard from "../SuperCard/SuperCard";
-const SuperPower = ({ superPowers = [], spendSuper }) => {
+const SuperPower = ({ superPowers = [], spendSuper, powersUsed = [] }) => {
   return (
     <div>
       {superPowers.map((power) => {
         return (
-          <SuperCard {...power} key={power.name} spendSuper={spendSuper} />
+          <SuperCard
+            name={power.name}
+            key={power.name}
+            spendSuper={spendSuper}
+            available={powersUsed.indexOf(power.name) === -1}
+          />
         );
       })}
     </div>

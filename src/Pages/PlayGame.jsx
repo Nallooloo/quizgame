@@ -49,10 +49,12 @@ const PlayGame = ({
   const usePower = (power) => {
     switch (power) {
       case "Extend Time":
+        setPowersUsed([...powersUsed, power]);
         setTimeRemaining(timeRemaining + superPowerExtendTime);
         break;
 
       case "50-50":
+        setPowersUsed([...powersUsed, power]);
         removeAnswers();
         break;
       default:
@@ -98,7 +100,11 @@ const PlayGame = ({
         setTimeRemaining={setTimeRemaining}
       />
 
-      <SuperPower spendSuper={usePower} superPowers={somePowers} />
+      <SuperPower
+        spendSuper={usePower}
+        superPowers={somePowers}
+        powersUsed={powersUsed}
+      />
 
       <div>
         Number answered: {nbrAnswered}/{nbrQuestions}
