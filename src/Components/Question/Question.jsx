@@ -10,7 +10,13 @@ const AnswerArea = styled.div`
   margin: auto;
 `;
 
-const Question = ({ question, answers, correctAnswer, answerQuestion }) => {
+const Question = ({
+  question,
+  answers,
+  correctAnswer,
+  answerQuestion,
+  removedAnswers = [],
+}) => {
   return (
     <div>
       <h4>{question}</h4>
@@ -21,6 +27,7 @@ const Question = ({ question, answers, correctAnswer, answerQuestion }) => {
               answer={answer}
               key={index}
               choiceMade={answerQuestion}
+              avialable={removedAnswers.indexOf(answer) === -1}
             />
           );
         })}
