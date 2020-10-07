@@ -8,7 +8,6 @@ const Count = styled.h3`
 `;
 
 const CountDownTimer = ({
-  setTimeRemaining,
   redTimer = 5,
 
   timeRemaining,
