@@ -11,7 +11,7 @@ const Card = styled.div`
 
   padding: 3px;
   width: 250px;
-  height: 100px;
+  height: 50px;
 
   &:hover {
     background-color: ${(props) => (props.available ? "#1db2ec" : null)};
