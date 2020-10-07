@@ -18,6 +18,8 @@ const PlayGame = ({
   const [questionSet, setQuestionSet] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState(defaultTime);
   const [powersAvailable, setPowersAvailable] = useState({ somePowers });
+  const [powersUsed, setPowersUsed] = useState([]);
+  const [removedAnswers, setRemovedAnswers] = useState([]);
   //"load the questions"
   useEffect(() => {
     setQuestionSet(someQuestions);
@@ -28,6 +30,8 @@ const PlayGame = ({
   //on answer update question and rerender to display next question.
   useEffect(() => {
     setCurrQuestion(questionSet[nbrAnswered]);
+    //reset removed answers. or we get funny results
+    setRemovedAnswers([]);
   }, [questionSet, nbrAnswered]);
 
   useInterval(() => {
@@ -57,9 +61,9 @@ const PlayGame = ({
   };
 
   const removeAnswers = () => {
-    let filterAns = [];
-    console.log(currQuestion.answers.length);
-    console.log(currQuestion.answers);
+    //well this could be just [], but i could use my powers many times :-)
+    let filterAns = removedAnswers;
+
     if (currQuestion.answers.length === 1) {
       return;
     }
@@ -75,19 +79,7 @@ const PlayGame = ({
       }
     }
 
-    if (filterAns) {
-      let newAns = currQuestion.answers.filter(
-        (ans) => filterAns.indexOf(ans) === -1
-      );
-
-      //ugly fix to get rid of issues with modifying "currQuestion", better fix implement a deep copy on load?
-      let tmp = {};
-      tmp.answers = newAns;
-      tmp.question = currQuestion.question;
-      tmp.correctAnswer = currQuestion.correctAnswer;
-      // currQuestion.answers = newAns;
-      setCurrQuestion(tmp);
-    }
+    setRemovedAnswers(filterAns);
   };
 
   //move up stuff below to make it more clear what happens.
@@ -95,7 +87,11 @@ const PlayGame = ({
     <div>
       {nbrAnswered === nbrQuestions ? <Redirect to="/stats" /> : null}
       {currQuestion ? (
-        <Question answerQuestion={answerQuestion} {...currQuestion} />
+        <Question
+          answerQuestion={answerQuestion}
+          {...currQuestion}
+          removedAnswers={removedAnswers}
+        />
       ) : null}
       <CountDownTimer
         timeRemaining={timeRemaining}
