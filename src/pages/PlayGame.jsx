@@ -21,6 +21,7 @@ const PlayGame = ({
   const [powersUsed, setPowersUsed] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
+
   //"load the questions"
   useEffect(() => {
     (async () => {
@@ -66,21 +67,22 @@ const PlayGame = ({
   };
 
   const removeAnswers = () => {
-    //well this could be just [], but i could use my powers many times :-)
+    //well this could be just [], but i could use my power many times before, and then it matters :-)
     let filterAns = removedAnswers;
 
-    if (currQuestion.answers.length === 1) {
+    //not needed with current 1 power limit
+    if (currQuestion.answers.length - filterAns.length === 1) {
       return;
     }
     while (currQuestion.answers.length / 2 > filterAns.length) {
-      console.log("im looping");
-      let rng = Math.floor(Math.random() * currQuestion.answers.length);
+      //get a random index
+      let randomIdx = Math.floor(Math.random() * currQuestion.answers.length);
+      //make sure the found index is not the correct answer, and that it s not "removed" already.
       if (
-        currQuestion.answers[rng] !== currQuestion.correctAnswer &&
-        filterAns.indexOf(currQuestion.answers[rng]) === -1
+        currQuestion.answers[randomIdx] !== currQuestion.correctAnswer &&
+        filterAns.indexOf(currQuestion.answers[randomIdx]) === -1
       ) {
-        filterAns.push(currQuestion.answers[rng]);
-        console.log(filterAns);
+        filterAns.push(currQuestion.answers[randomIdx]);
       }
     }
 
