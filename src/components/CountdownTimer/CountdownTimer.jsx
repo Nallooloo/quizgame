@@ -1,14 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const RedCount = styled.h3`
+const Count = styled.h3`
   margin: 0px;
-  color: red;
-`;
-
-const GreenCount = styled.h3`
-  margin: 0px;
-  color: green;
+  color: ${({ timeRemaining, redTimer }) =>
+    timeRemaining > redTimer ? "green" : "red"};
 `;
 
 const CountDownTimer = ({
@@ -17,15 +13,12 @@ const CountDownTimer = ({
 
   timeRemaining,
 }) => {
-  return timeRemaining >= redTimer ? (
+  return (
     <div>
       Remaining time:
-      <GreenCount>{timeRemaining.toFixed(1)}</GreenCount>
-    </div>
-  ) : (
-    <div>
-      Remaining time:
-      <RedCount>{timeRemaining.toFixed(1)}</RedCount>
+      <Count timeRemaining={timeRemaining} redTimer={redTimer}>
+        {timeRemaining.toFixed(1)}
+      </Count>
     </div>
   );
 };
