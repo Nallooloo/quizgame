@@ -14,7 +14,7 @@ const PlayGame = ({
   addOneMissed,
   addAnswerTime,
   defaultTime = 2000,
-  superPowerExtendTime = 10,
+  superPowerExtendTime = 10000,
 }) => {
   const [nbrAnswered, setNbrAnswered] = useState(0);
   const [currQuestion, setCurrQuestion] = useState({});
