@@ -25,7 +25,7 @@ const Game = () => {
   };
 
   const addAnswerTime = (time) => {
-    setAnswerTimes([...answerTimes, time]);
+    setAnswerTimes([...answerTimes, time / 1000]);
   };
 
   return (
