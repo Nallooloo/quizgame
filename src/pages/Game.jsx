@@ -21,6 +21,7 @@ const Game = () => {
   const resetGame = () => {
     setNbrCorrect(0);
     setNbrMissed(0);
+    setAnswerTimes([]);
   };
 
   const addAnswerTime = (time) => {
@@ -43,6 +44,8 @@ const Game = () => {
           <Stats
             nbrCorrect={nbrCorrect}
             nbrQuestions={nbrQuestions}
+            nbrMissed={nbrMissed}
+            answerTimes={answerTimes}
             resetGame={resetGame}
           />
         </Route>
