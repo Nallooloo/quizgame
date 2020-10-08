@@ -14,7 +14,7 @@ const Stats = ({
       <div>Number answered: {nbrQuestions}</div>
       <div>Number missed: {nbrMissed}</div>
       {answerTimes.map((time, index) => {
-        return <div key={index}>{time.toFixed(1)}</div>;
+        return <div key={index}>{time.toFixed(2)}</div>;
       })}
       <Link to="/play" onClick={() => resetGame()}>
         Play agian!
