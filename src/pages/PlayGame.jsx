@@ -23,7 +23,7 @@ const PlayGame = ({
   const [superPowers, setsuperPowers] = useState([]);
   const [powersUsed, setPowersUsed] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
-  const [loadingNextQuestion, setLoadingNextQuestion] = useState(true);
+  const [loadingNextQuestion, setLoadingNextQuestion] = useState(false);
   let [loading, setLoading] = useState(true);
   let runTick = useRef(true);
   //"load the questions"
@@ -49,24 +49,23 @@ const PlayGame = ({
       } else {
         runTick.current = false;
         if (nbrAnswered === nbrQuestions - 1) {
+          //game is over.
           addOneMissed();
-          console.log("add one last time...");
+
           setNbrAnswered(nbrAnswered + 1);
         } else {
-          console.log("after inner if");
           setLoadingNextQuestion(true);
 
           setTimeRemaining(defaultTime);
 
-          console.log(timeRemaining);
           addOneMissed();
-          console.log("after add one");
+
           setTimeout(() => {
             runTick.current = true;
             setNbrAnswered(nbrAnswered + 1);
 
             setLoadingNextQuestion(false);
-          }, 700);
+          }, 1500);
         }
       }
     },
@@ -81,14 +80,19 @@ const PlayGame = ({
     }
     addAnswerTime(defaultTime - timeRemaining);
 
-    setLoadingNextQuestion(true);
+    if (nbrQuestions === nbrAnswered + 1) {
+      //game is over.
+      setNbrAnswered(nbrAnswered + 1);
+    } else {
+      setLoadingNextQuestion(true);
 
-    setTimeRemaining(defaultTime);
-    setNbrAnswered(nbrAnswered + 1);
-    setTimeout(() => {
-      runTick.current = true;
-      setLoadingNextQuestion(false);
-    }, 500);
+      setTimeRemaining(defaultTime);
+      setTimeout(() => {
+        runTick.current = true;
+        setNbrAnswered(nbrAnswered + 1);
+        setLoadingNextQuestion(false);
+      }, 1500);
+    }
   };
 
   const usePower = (power) => {
