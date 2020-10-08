@@ -8,7 +8,7 @@ const Card = styled.div`
   margin: 10px 10px;
   background-color: ${(props) => (props.avialable ? "lightblue" : "grey")};
   border: solid 1px black;
-
+  border-radius: 15px;
   padding: 3px;
   width: 250px;
   height: 100px;
