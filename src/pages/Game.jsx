@@ -6,21 +6,37 @@ import Menu from "./Menu";
 
 const Game = () => {
   const [nbrCorrect, setNbrCorrect] = useState(0);
+  const [nbrMissed, setNbrMissed] = useState(0);
+  const [answerTimes, setAnswerTimes] = useState([]);
   const nbrQuestions = 4;
 
   const addOneCorrect = () => {
     setNbrCorrect(nbrCorrect + 1);
   };
 
+  const addOneMissed = () => {
+    setNbrMissed(nbrMissed + 1);
+  };
+
   const resetGame = () => {
     setNbrCorrect(0);
+    setNbrMissed(0);
+  };
+
+  const addAnswerTime = (time) => {
+    setAnswerTimes([...answerTimes, time]);
   };
 
   return (
     <Router>
       <Switch>
         <Route path="/play">
-          <PlayGame nbrQuestions={nbrQuestions} addOneCorrect={addOneCorrect} />
+          <PlayGame
+            nbrQuestions={nbrQuestions}
+            addOneCorrect={addOneCorrect}
+            addOneMissed={addOneMissed}
+            addAnswerTime={addAnswerTime}
+          />
         </Route>
 
         <Route path="/stats">
