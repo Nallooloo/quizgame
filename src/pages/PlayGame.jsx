@@ -26,6 +26,7 @@ const PlayGame = ({
   const [loadingNextQuestion, setLoadingNextQuestion] = useState(false);
   let [loading, setLoading] = useState(true);
   let runTick = useRef(true);
+  const questionDelay = 1500;
   //"load the questions"
   useEffect(() => {
     (async () => {
@@ -65,7 +66,7 @@ const PlayGame = ({
             setNbrAnswered(nbrAnswered + 1);
 
             setLoadingNextQuestion(false);
-          }, 1500);
+          }, questionDelay);
         }
       }
     },
@@ -91,7 +92,7 @@ const PlayGame = ({
         runTick.current = true;
         setNbrAnswered(nbrAnswered + 1);
         setLoadingNextQuestion(false);
-      }, 1500);
+      }, questionDelay);
     }
   };
 
