@@ -39,9 +39,11 @@ const PlayGame = ({
     setRemovedAnswers([]);
     setLoadingNextQuestion(true);
     setCurrQuestion(questionSet[nbrAnswered]);
-    setTimeout(() => {
+    let timer = setTimeout(() => {
       setLoadingNextQuestion(false); //triggers rerender...
     }, questionDelay);
+
+    return () => clearTimeout(timer);
   }, [questionSet, nbrAnswered]);
 
   useInterval(() => {
