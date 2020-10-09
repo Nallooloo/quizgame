@@ -6,6 +6,7 @@ import CountDownTimer from "../components/CountdownTimer/CountdownTimer";
 import useInterval from "../hooks/useInterval";
 import someQuestions from "../data/someQuestions.json";
 import somePowers from "../data/somePowers.json";
+import { useRef } from "react";
 
 const PlayGame = ({
   nbrQuestions,
@@ -26,6 +27,8 @@ const PlayGame = ({
   let [loading, setLoading] = useState(true);
   const superPowers = somePowers;
   const questionDelay = 1500;
+
+  let extendTimeUsed = useRef(false);
   //"load the questions"
   useEffect(() => {
     (async () => {
@@ -38,6 +41,7 @@ const PlayGame = ({
     //reset removed answers. or we get funny results with overlapping answers.
     setRemovedAnswers([]);
     setLoadingNextQuestion(true);
+    extendTimeUsed.current = false;
     setCurrQuestion(questionSet[nbrAnswered]);
     let timer = setTimeout(() => {
       setLoadingNextQuestion(false); //triggers rerender...
@@ -65,7 +69,11 @@ const PlayGame = ({
     if (value === currQuestion.correctAnswer) {
       addOneCorrect();
     }
-    addAnswerTime(defaultTime - timeRemaining);
+    if (extendTimeUsed.current) {
+      addAnswerTime(defaultTime + superPowerExtendTime - timeRemaining);
+    } else {
+      addAnswerTime(defaultTime - timeRemaining);
+    }
 
     setTimeRemaining(defaultTime);
     setNbrAnswered(nbrAnswered + 1);
@@ -75,6 +83,7 @@ const PlayGame = ({
     switch (power) {
       case "Extend Time":
         setPowersUsed([...powersUsed, power]);
+        extendTimeUsed.current = true;
         setTimeRemaining(timeRemaining + superPowerExtendTime);
         break;
 
