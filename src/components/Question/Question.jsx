@@ -13,6 +13,10 @@ const AnswerArea = styled.div`
   height: 256px;
 `;
 
+const QText = styled.div`
+  min-height: 35px;
+`;
+
 const Question = ({
   question,
   answers,
@@ -23,23 +27,35 @@ const Question = ({
 }) => {
   return (
     <div>
-      <h4>{question}</h4>
-      <AnswerArea>
-        {loadingNextQuestion ? (
-          <p>Get ready for next question! </p>
-        ) : (
-          answers.map((answer, index) => {
-            return (
-              <AnswerCard
-                answer={answer}
-                key={index}
-                choiceMade={answerQuestion}
-                avialable={removedAnswers.indexOf(answer) === -1}
-              />
-            );
-          })
-        )}
-      </AnswerArea>
+      {loadingNextQuestion ? (
+        <>
+          {/* quickfix to prevent jumping elements */}
+          <QText>
+            <h4> </h4>
+          </QText>
+          <AnswerArea>
+            <p>Get ready for next question! </p>
+          </AnswerArea>
+        </>
+      ) : (
+        <>
+          <QText>
+            <h4>{question}</h4>
+          </QText>
+          <AnswerArea>
+            {answers.map((answer, index) => {
+              return (
+                <AnswerCard
+                  answer={answer}
+                  key={index}
+                  choiceMade={answerQuestion}
+                  avialable={removedAnswers.indexOf(answer) === -1}
+                />
+              );
+            })}
+          </AnswerArea>
+        </>
+      )}
     </div>
   );
 };
