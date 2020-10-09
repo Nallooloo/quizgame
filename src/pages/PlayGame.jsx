@@ -20,7 +20,7 @@ const PlayGame = ({
   const [currQuestion, setCurrQuestion] = useState({});
   const [questionSet, setQuestionSet] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState(defaultTime);
-  const [superPowers, setsuperPowers] = useState([]);
+  const [superPowers, setsuperPowers] = useState(somePowers);
   const [powersUsed, setPowersUsed] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const [loadingNextQuestion, setLoadingNextQuestion] = useState(false);
@@ -31,8 +31,6 @@ const PlayGame = ({
   useEffect(() => {
     (async () => {
       setQuestionSet(someQuestions);
-      // setCurrQuestion(someQuestions[0]);
-      setsuperPowers(somePowers);
     })().then(() => setLoading(false));
   }, []);
 
@@ -49,10 +47,10 @@ const PlayGame = ({
         setTimeRemaining(timeRemaining - 10);
       } else {
         runTick.current = false;
-        if (nbrAnswered === nbrQuestions - 1) {
+        if (nbrQuestions === nbrAnswered + 1) {
           //game is over.
           addOneMissed();
-
+          //next render will trigger redirect
           setNbrAnswered(nbrAnswered + 1);
         } else {
           setLoadingNextQuestion(true);
@@ -113,13 +111,8 @@ const PlayGame = ({
   };
 
   const removeAnswers = () => {
-    //well this could be just [], but i could use my power many times before, and then it matters :-)
-    let filterAns = removedAnswers;
+    let filterAns = [];
 
-    //not needed with current 1 power limit
-    if (currQuestion.answers.length - filterAns.length === 1) {
-      return;
-    }
     while (currQuestion.answers.length / 2 > filterAns.length) {
       //get a random index
       let randomIdx = Math.floor(Math.random() * currQuestion.answers.length);
@@ -135,45 +128,42 @@ const PlayGame = ({
     setRemovedAnswers(filterAns);
   };
 
-  const renderGame = () => {
-    if (loading) {
-      return <div> Loading game...</div>;
-    }
+  //render loading duh
+  if (loading) {
+    return <div> Loading game...</div>;
+  }
 
-    /* if we have answered all questions we r done, go to stats... */
-    if (nbrAnswered === nbrQuestions) {
-      return <Redirect to="/stats" />;
-    }
-    //render game:
-    return (
+  /* if we have answered all questions we r done, go to stats... */
+  if (nbrAnswered === nbrQuestions) {
+    return <Redirect to="/stats" />;
+  }
+
+  //render game:
+  return (
+    <div>
+      <Question
+        answerQuestion={answerQuestion}
+        {...currQuestion}
+        removedAnswers={removedAnswers}
+        loadingNextQuestion={loadingNextQuestion}
+      />
+
+      <CountDownTimer
+        timeRemaining={timeRemaining / 1000}
+        setTimeRemaining={setTimeRemaining}
+      />
+
+      <SuperPower
+        spendSuper={usePower}
+        superPowers={superPowers}
+        powersUsed={powersUsed}
+      />
+
       <div>
-        <Question
-          answerQuestion={answerQuestion}
-          {...currQuestion}
-          removedAnswers={removedAnswers}
-          loadingNextQuestion={loadingNextQuestion}
-        />
-
-        <CountDownTimer
-          timeRemaining={timeRemaining / 1000}
-          setTimeRemaining={setTimeRemaining}
-        />
-
-        <SuperPower
-          spendSuper={usePower}
-          superPowers={superPowers}
-          powersUsed={powersUsed}
-        />
-
-        <div>
-          Number answered: {nbrAnswered}/{nbrQuestions}
-        </div>
+        Number answered: {nbrAnswered}/{nbrQuestions}
       </div>
-    );
-  };
-
-  //move up stuff below to make it more clear what happens.
-  return renderGame();
+    </div>
+  );
 };
 
 export default PlayGame;
