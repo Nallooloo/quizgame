@@ -6,7 +6,6 @@ import CountDownTimer from "../components/CountdownTimer/CountdownTimer";
 import useInterval from "../hooks/useInterval";
 import someQuestions from "../data/someQuestions.json";
 import somePowers from "../data/somePowers.json";
-import { useRef } from "react";
 
 const PlayGame = ({
   nbrQuestions,
@@ -20,12 +19,12 @@ const PlayGame = ({
   const [currQuestion, setCurrQuestion] = useState({});
   const [questionSet, setQuestionSet] = useState([]);
   const [timeRemaining, setTimeRemaining] = useState(defaultTime);
-  const [superPowers, setsuperPowers] = useState(somePowers);
+
   const [powersUsed, setPowersUsed] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const [loadingNextQuestion, setLoadingNextQuestion] = useState(false);
   let [loading, setLoading] = useState(true);
-
+  const superPowers = somePowers;
   const questionDelay = 1500;
   //"load the questions"
   useEffect(() => {
