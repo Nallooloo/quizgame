@@ -25,7 +25,7 @@ const PlayGame = ({
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const [loadingNextQuestion, setLoadingNextQuestion] = useState(false);
   let [loading, setLoading] = useState(true);
-  let runTick = useRef(true);
+
   const questionDelay = 1500;
   //"load the questions"
   useEffect(() => {
@@ -36,62 +36,38 @@ const PlayGame = ({
 
   //on answer update question and rerender to display next question.
   useEffect(() => {
-    setCurrQuestion(questionSet[nbrAnswered]);
-    //reset removed answers. or we get funny results
+    //reset removed answers. or we get funny results with overlapping answers.
     setRemovedAnswers([]);
+    setLoadingNextQuestion(true);
+    setCurrQuestion(questionSet[nbrAnswered]);
+    setTimeout(() => {
+      setLoadingNextQuestion(false); //triggers rerender...
+    }, questionDelay);
   }, [questionSet, nbrAnswered]);
 
-  useInterval(
-    () => {
-      if (timeRemaining > 0) {
-        setTimeRemaining(timeRemaining - 10);
-      } else {
-        runTick.current = false;
-        if (nbrQuestions === nbrAnswered + 1) {
-          //game is over.
-          addOneMissed();
-          //next render will trigger redirect
-          setNbrAnswered(nbrAnswered + 1);
-        } else {
-          setLoadingNextQuestion(true);
+  useInterval(() => {
+    if (loadingNextQuestion) {
+      return;
+    }
 
-          setTimeRemaining(defaultTime);
+    if (timeRemaining > 0) {
+      setTimeRemaining(timeRemaining - 10);
+      return;
+    }
 
-          addOneMissed();
-
-          setTimeout(() => {
-            runTick.current = true;
-            setNbrAnswered(nbrAnswered + 1);
-
-            setLoadingNextQuestion(false);
-          }, questionDelay);
-        }
-      }
-    },
-    runTick.current ? 10 : null
-  );
+    addOneMissed();
+    setTimeRemaining(defaultTime);
+    setNbrAnswered(nbrAnswered + 1);
+  }, 10);
 
   const answerQuestion = (value) => {
-    runTick.current = false;
-
     if (value === currQuestion.correctAnswer) {
       addOneCorrect();
     }
     addAnswerTime(defaultTime - timeRemaining);
 
-    if (nbrQuestions === nbrAnswered + 1) {
-      //game is over.
-      setNbrAnswered(nbrAnswered + 1);
-    } else {
-      setLoadingNextQuestion(true);
-
-      setTimeRemaining(defaultTime);
-      setTimeout(() => {
-        runTick.current = true;
-        setNbrAnswered(nbrAnswered + 1);
-        setLoadingNextQuestion(false);
-      }, questionDelay);
-    }
+    setTimeRemaining(defaultTime);
+    setNbrAnswered(nbrAnswered + 1);
   };
 
   const usePower = (power) => {
