@@ -13,7 +13,7 @@ const PlayGame = ({
   addOneCorrect,
   addOneMissed,
   addAnswerTime,
-  defaultTime = 2000,
+  defaultTime = 3000,
   superPowerExtendTime = 10000,
 }) => {
   const [nbrAnswered, setNbrAnswered] = useState(0);
@@ -31,9 +31,8 @@ const PlayGame = ({
   let extendTimeUsed = useRef(false);
   //"load the questions"
   useEffect(() => {
-    (async () => {
-      setQuestionSet(someQuestions);
-    })().then(() => setLoading(false));
+    setQuestionSet(someQuestions);
+    setLoading(false);
   }, []);
 
   //on answer update question and rerender to display next question.
@@ -42,8 +41,9 @@ const PlayGame = ({
     setRemovedAnswers([]);
     setLoadingNextQuestion(true);
     extendTimeUsed.current = false;
-    setCurrQuestion(questionSet[nbrAnswered]);
+
     let timer = setTimeout(() => {
+      setCurrQuestion(questionSet[nbrAnswered]);
       setLoadingNextQuestion(false); //triggers rerender...
     }, questionDelay);
 
@@ -55,12 +55,13 @@ const PlayGame = ({
       return;
     }
 
-    if (timeRemaining > 0) {
+    if (timeRemaining > 0 && !loadingNextQuestion) {
       setTimeRemaining(timeRemaining - 10);
       return;
     }
 
     addOneMissed();
+    setLoadingNextQuestion(true);
     setTimeRemaining(defaultTime);
     setNbrAnswered(nbrAnswered + 1);
   }, 10);
@@ -75,6 +76,7 @@ const PlayGame = ({
       addAnswerTime(defaultTime - timeRemaining);
     }
 
+    setLoadingNextQuestion(true);
     setTimeRemaining(defaultTime);
     setNbrAnswered(nbrAnswered + 1);
   };
