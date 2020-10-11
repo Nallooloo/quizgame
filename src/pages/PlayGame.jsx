@@ -56,7 +56,7 @@ const PlayGame = ({
     }
 
     if (timeRemaining > 0 && !loadingNextQuestion) {
-      setTimeRemaining(timeRemaining - 10);
+      setTimeRemaining((prevState) => prevState - 10);
       return;
     }
 
@@ -86,7 +86,7 @@ const PlayGame = ({
       case "Extend Time":
         setPowersUsed([...powersUsed, power]);
         extendTimeUsed.current = true;
-        setTimeRemaining(timeRemaining + superPowerExtendTime);
+        setTimeRemaining((prevState) => prevState + superPowerExtendTime);
         break;
 
       case "50-50":
