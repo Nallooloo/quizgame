@@ -48,7 +48,7 @@ const PlayGame = ({
   useEffect(() => {
     setQuestionSet(getQuestionSet(nbrQuestions));
     setLoading(false);
-  }, []);
+  }, [nbrQuestions]);
 
   //on answer update question and rerender to display next question.
   useEffect(() => {
