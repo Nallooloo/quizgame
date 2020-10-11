@@ -8,8 +8,23 @@ import someQuestions from "../data/someQuestions.json";
 import somePowers from "../data/somePowers.json";
 import { useRef } from "react";
 
+const getQuestionSet = (nbrQuestions) => {
+  let questionIndexes = [];
+
+  while (questionIndexes.length < nbrQuestions) {
+    //get a random index
+    let randomIdx = Math.floor(Math.random() * someQuestions.length);
+    //make sure the found index is not the correct answer, and that it s not "removed" already.
+    if (questionIndexes.indexOf(randomIdx) === -1) {
+      questionIndexes.push(randomIdx);
+    }
+  }
+
+  return questionIndexes.map((idx) => someQuestions[idx]);
+};
+
 const PlayGame = ({
-  nbrQuestions,
+  nbrQuestions = 5,
   addOneCorrect,
   addOneMissed,
   addAnswerTime,
@@ -31,7 +46,7 @@ const PlayGame = ({
   let extendTimeUsed = useRef(false);
   //"load the questions"
   useEffect(() => {
-    setQuestionSet(someQuestions);
+    setQuestionSet(getQuestionSet(nbrQuestions));
     setLoading(false);
   }, []);
 
@@ -56,6 +71,7 @@ const PlayGame = ({
     }
 
     if (timeRemaining > 0 && !loadingNextQuestion) {
+      //make sure we actually work with the correct values...
       setTimeRemaining((prevState) => prevState - 10);
       return;
     }
@@ -86,6 +102,7 @@ const PlayGame = ({
       case "Extend Time":
         setPowersUsed([...powersUsed, power]);
         extendTimeUsed.current = true;
+        //make sure we actually work with the correct values...
         setTimeRemaining((prevState) => prevState + superPowerExtendTime);
         break;
 

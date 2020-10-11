@@ -18,5 +18,45 @@
     "question": "Who is my brother?",
     "answers": ["Flydiverny", "MrFluFFy", "Abakar", "God"],
     "correctAnswer": "Flydiverny"
+  },
+  {
+    "question": "Which is my latest bought console?",
+    "answers": ["PS5", "Switch", "Dreamcast", "Xbox360"],
+    "correctAnswer": "Switch"
+  },
+  {
+    "question": "What is the name of my kids?",
+    "answers": [
+      "Freja and Sofie",
+      "My and Jonas",
+      "Leo and Fiona",
+      "Gabriel and Jonathan"
+    ],
+    "correctAnswer": "Gabriel and Jonathan"
+  },
+  {
+    "question": "How many cats?",
+    "answers": ["1", "2", "3", "4"],
+    "correctAnswer": "2"
+  },
+  {
+    "question": "My cat names are based on?",
+    "answers": ["Cars", "Game characters", "Gods", "Nothing"],
+    "correctAnswer": "Gods"
+  },
+  {
+    "question": "My cat names are based on?",
+    "answers": ["Cars", "Game characters", "Gods", "Nothing"],
+    "correctAnswer": "Gods"
+  },
+  {
+    "question": "Highest rank reached in overwatch?",
+    "answers": ["Master", "Gold", "Platinum", "Grand Master"],
+    "correctAnswer": "Grand Master"
+  },
+  {
+    "question": "Where do i currently work?",
+    "answers": ["Region Skåne", "Ikea", "Jayway", "Ica"],
+    "correctAnswer": "Region Skåne"
   }
 ]
