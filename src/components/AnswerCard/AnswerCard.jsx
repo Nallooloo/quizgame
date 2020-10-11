@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Card = styled.div`
+const Card = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
